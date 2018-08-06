@@ -1,9 +1,13 @@
 from django.contrib.auth.models import User, Group
-from rest_framework import viewsets
-
+from rest_framework import viewsets, status
+from django.http import JsonResponse
 from manager.models import Task
 from manager.serializers import UserSerializer, GroupSerializer, TaskSerializer
 from rest_framework.views import APIView
+import sys
+import subprocess
+from subprocess import CompletedProcess
+
 
 class UserViewSet(viewsets.ModelViewSet):
     """
@@ -41,7 +45,24 @@ class TaskViewSet(viewsets.ModelViewSet):
         return super().destroy(request, *args, **kwargs)
 
     def list(self, request, *args, **kwargs):
-        return super().list(request, *args, **kwargs)
+        js = {}
+        js['code'] = status.HTTP_200_OK
+        js['msg'] = '列表查询成功'
+        js['data'] = super().list(request, *args, **kwargs).data
+        return JsonResponse(data=js, safe=False)
 
     def partial_update(self, request, *args, **kwargs):
         return super().partial_update(request, *args, **kwargs)
+
+
+class CheckSystem(APIView):
+    def get(self, request, *args, **kwargs):
+        system = sys.platform
+        if (system == 'win32'):
+            x = subprocess.run('scrapy version', shell=True, stdout=subprocess.PIPE)
+            js = {}
+            js['code'] = status.HTTP_200_OK
+            js['msg'] = '版本查询成功'
+            js['data'] = {'version': bytes.decode(x.stdout).replace('\r', '').replace('\n', '')}
+            print(js)
+            return JsonResponse(js, safe=False)

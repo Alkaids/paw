@@ -8,6 +8,7 @@ django = "*"
 djangorestframework = "*"
 scrapyd = "*"
 scrapyd-client = "*"
+twisted = {path = "./Twisted-18.7.0-cp37-cp37m-win_amd64.whl"}
 
 [dev-packages]
 pygments = "*"
