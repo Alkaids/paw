@@ -6,7 +6,8 @@ from manager.serializers import UserSerializer, GroupSerializer, TaskSerializer
 from rest_framework.views import APIView
 import sys
 import subprocess
-from subprocess import CompletedProcess
+import logging
+import json
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -64,5 +65,21 @@ class CheckSystem(APIView):
             js['code'] = status.HTTP_200_OK
             js['msg'] = '版本查询成功'
             js['data'] = {'version': bytes.decode(x.stdout).replace('\r', '').replace('\n', '')}
-            print(js)
+            logging.info(js)
             return JsonResponse(js, safe=False)
+
+
+class Deploy(APIView):
+    def post(self, request, *args, **kwargs):
+        task = request.data
+        logging.info(task)
+        sh = 'cd ' + task['path'] + '&& scrapyd-deploy'
+        logging.info(sh)
+        x = subprocess.run(sh, shell=True, stdout=subprocess.PIPE)
+        js = {}
+        js['code'] = status.HTTP_200_OK
+        js['msg'] = '添加任务成功'
+        js['data'] = {'deploy_result': bytes.decode(x.stdout).replace('\r', '').replace('\n', '')}
+        logging.info(js)
+        return JsonResponse(js, safe=False)
+
