@@ -115,3 +115,23 @@ venv.bak/
 /manager/migrations/0001_initial.py
 /manager/migrations/0002_task_type.py
 templates/
+/pawfront/node_modules/
+/pawfront/dist/
+
+/pawfront/npm-debug.log*
+/pawfront/yarn-debug.log*
+/pawfront/yarn-error.log*
+/pawfront/test/unit/coverage/
+/pawfront/test/e2e/reports/
+selenium-debug.log
+
+# Editor directories and files
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+Twisted-18.7.0-cp37-cp37m-win_amd64.whl
+
+/dbs/
+/eggs/
+/logs/
