@@ -8,6 +8,8 @@ django = "*"
 djangorestframework = "*"
 scrapyd = "*"
 scrapyd-client = "*"
+"pypiwin32" = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 pygments = "*"

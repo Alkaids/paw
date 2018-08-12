@@ -3,7 +3,7 @@
     <div class="left-sidebar">
       <el-menu class="el-menu-vertical" :collapse="isCollapse" background-color="#304156"
                text-color="#bfcbd9"
-               active-text-color="#409EFF" router="true">
+               active-text-color="#409EFF" :router="isRouter">
         <el-submenu index="1">
           <template slot="title">
             <i class="el-icon-menu"></i>
@@ -15,22 +15,29 @@
             <el-menu-item index="1-3">爬取日志</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
-        <el-menu-item index="2">
-          <i class="el-icon-upload"></i>
-          <span slot="title">部署</span>
-        </el-menu-item>
+        <el-submenu index="2">
+          <template slot="title">
+            <i class="el-icon-upload"></i>
+            <span slot="title">部署</span>
+          </template>
+          <el-menu-item-group>
+            <el-menu-item index="/setting">设置</el-menu-item>
+            <el-menu-item index="/upload_project">上传项目</el-menu-item>
+            <el-menu-item index="/deploy_local_project">部署本地项目</el-menu-item>
+          </el-menu-item-group>
+        </el-submenu>
         <el-menu-item index="3">
           <i class="el-icon-edit"></i>
           <span slot="title">开发者</span>
         </el-menu-item>
         <el-menu-item index="4">
           <i class="el-icon-question"></i>
-          <span slot="title">待定</span>
+          <span slot="title">帮助</span>
         </el-menu-item>
       </el-menu>
     </div>
     <div class="nav-bar">
-      <el-menu mode="horizontal" @select="handleSelect">
+      <el-menu mode="horizontal">
         <i class="fa fa-paw fa-3x" aria-hidden="true" style="float: left; margin-left: 20px;"></i>
         <a style="float: left; margin-left: 20px;line-height: 60px">PAW</a>
         <div class="right-menu">
@@ -69,7 +76,8 @@
   export default {
     data() {
       return {
-        isCollapse: false
+        isCollapse: false,
+        isRouter: true
       }
     }
   }
@@ -95,6 +103,10 @@
   }
 
   .nav-bar {
+    margin-left: 200px;
+  }
+
+  .content-container {
     margin-left: 200px;
   }
 

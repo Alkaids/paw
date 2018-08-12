@@ -83,3 +83,23 @@ class Deploy(APIView):
         logging.info(js)
         return JsonResponse(js, safe=False)
 
+
+class LogShow(APIView):
+    def post(self, request, *args, **kwargs):
+        jobid = request.data['id']
+        log_path = request.data['path']
+        project = request.data['project']
+        spider = request.data['spider']
+        logging.info('查询 ' + log_path + '路径下项目为' + project + '爬虫为' + spider + ' jobid为' + jobid + '的任务日志')
+        file_path = log_path + '/' + project + '/' + spider + '/' + jobid + '.log'
+        log_text = ''
+        with open(file_path, 'r+',encoding='UTF-8') as f:
+            lines = f.readlines()
+            log_text = lines
+        js = {}
+        js['code'] = status.HTTP_200_OK
+        js['msg'] = '查询日志信息成功'
+        js['data'] = {'log_text': log_text}
+        logging.info(js)
+        return JsonResponse(js, safe=False)
+
