@@ -183,7 +183,13 @@
       </el-table>
     </div>
     <el-dialog title="日志" :visible.sync="dialogTableVisible">
-      <div>{{this.logtext}}</div>
+      <div class="log-content">
+         <pre v-highlight>
+         <code class="left-text accesslog" v-html="logtext">
+      </code>
+    </pre>
+      </div>
+
     </el-dialog>
 
   </div>
@@ -239,7 +245,7 @@
         param.spider = job.spider
         param.id = job.id
         listlog(param).then(res => {
-          this.logtext = res.data.log_text
+          this.logtext = (res.data.log_text).join('<br>')
           this.dialogTableVisible = true
         })
       }
@@ -251,5 +257,14 @@
   .left-title {
     text-align: left !important;
     margin-left: 10px;
+  }
+
+  .left-text {
+    text-align: left !important;
+    margin-left: 10px;
+  }
+
+  .log-content {
+    border: 1px sienna solid;
   }
 </style>
