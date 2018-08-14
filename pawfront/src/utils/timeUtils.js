@@ -7,5 +7,8 @@ export function timeFormat(time) {
 }
 
 export function timeReduce(start, end) {
+  if (end === null) {
+    return moment().diff(moment(start)) / 1000
+  }
   return moment(end).diff(moment(start)) / 1000
 }

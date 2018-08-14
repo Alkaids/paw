@@ -1,5 +1,5 @@
 <template>
-  <div class="task-list">
+  <div class="main-content">
     <div class="pending-table">
       <h3 class="left-title">部署中任务</h3>
       <el-table
@@ -41,7 +41,7 @@
           header-align="center"
         />
         <el-table-column
-          label="执行时间"
+          label="已执行"
           prop="exec_time"
           sortable
           width="100"
@@ -103,7 +103,7 @@
           header-align="center"
         />
         <el-table-column
-          label="执行时间"
+          label="已执行"
           prop="exec_time"
           sortable
           width="100"
@@ -217,10 +217,16 @@
           listjobs(project).then(res => {
             for (let pend of res.pending) {
               pend.project = project
+              pend.start_time = timeFormat(pend.start_time)
+              pend.end_time = timeFormat(pend.end_time)
+              pend.exec_time = timeReduce(pend.start_time, null) + 's'
               this.pending.push(pend)
             }
             for (let run of res.running) {
               run.project = project
+              run.start_time = timeFormat(run.start_time)
+              run.end_time = timeFormat(run.end_time)
+              run.exec_time = timeReduce(run.start_time, null) + 's'
               this.running.push(run)
             }
             for (let finish of res.finished) {

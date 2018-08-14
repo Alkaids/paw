@@ -11,7 +11,7 @@
           </template>
           <el-menu-item-group>
             <el-menu-item index="/main">总览</el-menu-item>
-            <el-menu-item index="1-2">爬取结果</el-menu-item>
+            <el-menu-item index="/schedule">爬虫调度</el-menu-item>
             <el-menu-item index="1-3">爬取日志</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
@@ -64,7 +64,7 @@
       </el-menu>
     </div>
     <div class="content-container">
-      <transition name="el-zoom-in-center">
+      <transition name="el-fade-in-linear">
         <router-view></router-view>
       </transition>
     </div>
