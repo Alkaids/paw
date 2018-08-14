@@ -115,9 +115,10 @@ venv.bak/
 /manager/migrations/0001_initial.py
 /manager/migrations/0002_task_type.py
 templates/
+
+#npm content hidden
 /pawfront/node_modules/
 /pawfront/dist/
-
 /pawfront/npm-debug.log*
 /pawfront/yarn-debug.log*
 /pawfront/yarn-error.log*
@@ -132,6 +133,10 @@ selenium-debug.log
 *.sln
 Twisted-18.7.0-cp37-cp37m-win_amd64.whl
 
+#hidden scrapyd data
 /dbs/
-/eggs/
 /logs/
+
+
+#not hidden pawfront build
+!/pawfront/build
