@@ -16,6 +16,8 @@ axios.interceptors.response.use((res) => {
   return res
 }, (err) => {
   if (err && err.response) {
+    console.log(err)
+    console.log(err.response.status)
     switch (err.response.status) {
       case 400:
         err.message = '请求错误(400)'
@@ -60,7 +62,7 @@ axios.interceptors.response.use((res) => {
 })
 
 function PostFetch(url, params, contentType) {
-  if (params.ispaw === true) {
+  if (params !== null && params.ispaw === true) {
     return new Promise((resolve, reject) => {
       pawclient.post(url, params, {
         headers: {
@@ -123,50 +125,146 @@ function PostFetch(url, params, contentType) {
   }
 }
 
-function GetFetch(url, contentType) {
-  return new Promise((resolve, reject) => {
-    axios.get(url, {
-      headers: {
-        'Content-Type': contentType
-      }
-    }, {
-      validateStatus: status => {
-        return status !== 200
-      }
+function GetFetch(url, params, contentType) {
+  if (params !== null && params.ispaw === true) {
+    return new Promise((resolve, reject) => {
+      pawclient.get(url, {
+        headers: {
+          'Content-Type': contentType
+        }
+      }, {
+        validateStatus: status => {
+          return status !== 200
+        }
+      })
+        .then(response => {
+          if (response.data) {
+            resolve(response.data)
+          } else {
+            resolve(response.data)
+          }
+        })
+        .catch((error) => {
+          if (error.response) {
+            console.log(error.response.data)
+          } else if (error.request) {
+            console.log(error.request)
+          } else {
+            console.log('Error', error.message)
+          }
+          console.log(error.config)
+          reject(error)
+        })
     })
-      .then(response => {
-        if (response.data) {
-          resolve(response.data)
-        } else {
-          resolve(response.data)
+  } else {
+    return new Promise((resolve, reject) => {
+      axios.get(url, {
+        headers: {
+          'Content-Type': contentType
+        }
+      }, {
+        validateStatus: status => {
+          return status !== 200
         }
       })
-      .catch((error) => {
-        if (error.response) {
-          console.log(error.response.data)
-        } else if (error.request) {
-          console.log(error.request)
-        } else {
-          console.log('Error', error.message)
+        .then(response => {
+          if (response.data) {
+            resolve(response.data)
+          } else {
+            resolve(response.data)
+          }
+        })
+        .catch((error) => {
+          if (error.response) {
+            console.log(error.response.data)
+          } else if (error.request) {
+            console.log(error.request)
+          } else {
+            console.log('Error', error.message)
+          }
+          console.log(error.config)
+          reject(error)
+        })
+    })
+  }
+}
+
+function PutFetch(url, params, contentType) {
+  if (params !== null && params.ispaw === true) {
+    return new Promise((resolve, reject) => {
+      pawclient.put(url, params, {
+        headers: {
+          'Content-Type': contentType
         }
-        console.log(error.config)
-        reject(error)
+      }, {
+        validateStatus: status => {
+          return status !== 200
+        }
       })
-  })
+        .then(response => {
+          if (response.data) {
+            resolve(response.data)
+          } else {
+            resolve(response.data)
+          }
+        })
+        .catch((error) => {
+          if (error.response) {
+            console.log(error.response.data)
+          } else if (error.request) {
+            console.log(error.request)
+          } else {
+            console.log('Error', error.message)
+          }
+          console.log(error.config)
+          reject(error)
+        })
+    })
+  } else {
+    return new Promise((resolve, reject) => {
+      axios.put(url, params, {
+        headers: {
+          'Content-Type': contentType
+        }
+      }, {
+        validateStatus: status => {
+          return status !== 200
+        }
+      })
+        .then(response => {
+          if (response.data) {
+            resolve(response.data)
+          } else {
+            resolve(response.data)
+          }
+        })
+        .catch((error) => {
+          if (error.response) {
+            console.log(error.response.data)
+          } else if (error.request) {
+            console.log(error.request)
+          } else {
+            console.log('Error', error.message)
+          }
+          console.log(error.config)
+          reject(error)
+        })
+    })
+  }
 }
 
 /**
  * 获取所有项目
  */
 export function listprojects() {
-  return GetFetch('/listprojects.json', 'application/json')
+  return GetFetch('/listprojects.json', null, 'application/json')
 }
 
 /**
  * 获取所有项目
  */
 export function listjobs(project) {
-  return GetFetch('/listjobs.json?project=' + project, 'application/json')
+  return GetFetch('/listjobs.json?project=' + project, null, 'application/json')
 }
 
 /**
@@ -174,4 +272,18 @@ export function listjobs(project) {
  */
 export function listlog(param) {
   return PostFetch('/manager/log/', param, 'application/json')
+}
+
+/**
+ * 获取定义好的所有项目
+ */
+export function listdefinedprojects(param) {
+  return GetFetch('/manager/project/', param, 'application/json')
+}
+
+/**
+ * 保存项目
+ */
+export function saveproject(param) {
+  return PostFetch('/manager/project/', param, 'application/json')
 }

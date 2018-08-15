@@ -1,8 +1,8 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets, status
 from django.http import JsonResponse
-from manager.models import Task
-from manager.serializers import UserSerializer, GroupSerializer, TaskSerializer
+from manager.models import Project
+from manager.serializers import UserSerializer, GroupSerializer, ProjectSerializer
 from rest_framework.views import APIView
 import sys
 import subprocess
@@ -26,24 +26,40 @@ class GroupViewSet(viewsets.ModelViewSet):
     serializer_class = GroupSerializer
 
 
-class TaskViewSet(viewsets.ModelViewSet):
+class ProjectViewSet(viewsets.ModelViewSet):
     """
     查看、编辑任务的界面
     """
-    queryset = Task.objects.all()
-    serializer_class = TaskSerializer
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
 
     def create(self, request, *args, **kwargs):
-        return super().create(request, *args, **kwargs)
+        js = {}
+        js['code'] = status.HTTP_200_OK
+        js['msg'] = '创建项目成功'
+        js['data'] = super().create(request, *args, **kwargs).data
+        return JsonResponse(data=js, safe=False)
 
     def retrieve(self, request, *args, **kwargs):
-        return super().retrieve(request, *args, **kwargs)
+        js = {}
+        js['code'] = status.HTTP_200_OK
+        js['msg'] = '单个查询成功'
+        js['data'] = super().retrieve(request, *args, **kwargs).data
+        return JsonResponse(data=js, safe=False)
 
     def update(self, request, *args, **kwargs):
-        return super().update(request, *args, **kwargs)
+        js = {}
+        js['code'] = status.HTTP_200_OK
+        js['msg'] = '更新项目成功'
+        js['data'] = super().update(request, *args, **kwargs).data
+        return JsonResponse(data=js, safe=False)
 
     def destroy(self, request, *args, **kwargs):
-        return super().destroy(request, *args, **kwargs)
+        js = {}
+        js['code'] = status.HTTP_200_OK
+        js['msg'] = '更新项目成功'
+        js['data'] = super().destroy(request, *args, **kwargs).data
+        return JsonResponse(data=js, safe=False)
 
     def list(self, request, *args, **kwargs):
         js = {}
@@ -93,7 +109,7 @@ class LogShow(APIView):
         logging.info('查询 ' + log_path + '路径下项目为' + project + '爬虫为' + spider + ' jobid为' + jobid + '的任务日志')
         file_path = log_path + '/' + project + '/' + spider + '/' + jobid + '.log'
         log_text = ''
-        with open(file_path, 'r+',encoding='UTF-8') as f:
+        with open(file_path, 'r+', encoding='UTF-8') as f:
             lines = f.readlines()
             log_text = lines
         js = {}
@@ -102,4 +118,3 @@ class LogShow(APIView):
         js['data'] = {'log_text': log_text}
         logging.info(js)
         return JsonResponse(js, safe=False)
-

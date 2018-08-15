@@ -2,8 +2,7 @@ from django.db import models
 
 
 # Create your models here.
-# Create your models here.
-class Task(models.Model):
+class Project(models.Model):
     # 爬虫名字
     name = models.CharField(max_length=200)
     # 爬虫备注

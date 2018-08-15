@@ -64,9 +64,9 @@
       </el-menu>
     </div>
     <div class="content-container">
-      <transition name="el-fade-in-linear">
+      <!--<transition name="el-fade-in-linear">-->
         <router-view></router-view>
-      </transition>
+      <!--</transition>-->
     </div>
   </div>
 </template>
@@ -85,7 +85,7 @@
 
 <style scoped>
   .el-menu-vertical {
-    width: 200px;
+    width: 13.5%;
     height: 100%;
     text-align: left;
     position: fixed;
@@ -103,11 +103,11 @@
   }
 
   .nav-bar {
-    margin-left: 200px;
+    margin-left: 13.5%;
   }
 
   .content-container {
-    margin-left: 200px;
+    margin-left: 210px;
   }
 
   .right-menu {

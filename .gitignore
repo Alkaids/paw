@@ -143,3 +143,6 @@ Twisted-18.7.0-cp37-cp37m-win_amd64.whl
 
 #Pipfile.lock hidden
 Pipfile.lock
+
+#migrations
+/manager/migrations/!__init__.py
