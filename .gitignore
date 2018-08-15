@@ -124,6 +124,7 @@ templates/
 /pawfront/yarn-error.log*
 /pawfront/test/unit/coverage/
 /pawfront/test/e2e/reports/
+/pawfront/package-lock.json
 selenium-debug.log
 
 # Editor directories and files
@@ -137,6 +138,8 @@ Twisted-18.7.0-cp37-cp37m-win_amd64.whl
 /dbs/
 /logs/
 
-
 #not hidden pawfront build
 !/pawfront/build
+
+#Pipfile.lock hidden
+Pipfile.lock
