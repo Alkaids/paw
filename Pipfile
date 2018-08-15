@@ -8,7 +8,6 @@ django = "*"
 djangorestframework = "*"
 scrapyd = "*"
 scrapyd-client = "*"
-"pypiwin32" = "*"
 django-cors-headers = "*"
 schedule = "*"
 
