@@ -15,3 +15,7 @@
     
     then use "python setup.py install" to install scrapyd-client and scrapyd-deploy to your cmd
     
+4.  Scrapy throw error  like File "/xxx/lib/python3.7/site-packages/twisted/conch/manhole.py", line 154
+	    def write(self, data, async=False):"
+	
+	edit manhole.py rename async to other word(eg async11)

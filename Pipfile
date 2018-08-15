@@ -9,7 +9,6 @@ djangorestframework = "*"
 scrapyd = "*"
 scrapyd-client = "*"
 django-cors-headers = "*"
-schedule = "*"
 
 [dev-packages]
 pygments = "*"

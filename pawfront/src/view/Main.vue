@@ -9,45 +9,45 @@
           label="项目"
           prop="project"
           sortable
-          width="100"
+          min-width="10%"
           header-align="center"
         />
         <el-table-column
           label="爬虫"
           prop="spider"
           sortable
-          width="100"
+          min-width="10%"
           header-align="center"
         />
         <el-table-column
           label="id"
           prop="id"
           sortable
-          width="300"
+          min-width="25%"
           header-align="center"
         />
         <el-table-column
           label="开始时间"
           prop="start_time"
           sortable
-          width="200"
+          min-width="15%"
           header-align="center"
         />
         <el-table-column
           label="结束时间"
           prop="end_time"
           sortable
-          width="250"
+          min-width="15%"
           header-align="center"
         />
         <el-table-column
           label="已执行"
           prop="exec_time"
           sortable
-          width="100"
+          min-width="10%"
           header-align="center"
         />
-        <el-table-column label="操作" header-align="center">
+        <el-table-column label="操作" header-align="center" min-width="15%">
           <template slot-scope="scope">
             <el-button
               size="mini"
@@ -71,45 +71,45 @@
           label="项目"
           prop="project"
           sortable
-          width="100"
+          min-width="10%"
           header-align="center"
         />
         <el-table-column
           label="爬虫"
           prop="spider"
           sortable
-          width="100"
+          min-width="10%"
           header-align="center"
         />
         <el-table-column
           label="id"
           prop="id"
           sortable
-          width="300"
+          min-width="25%"
           header-align="center"
         />
         <el-table-column
           label="开始时间"
           prop="start_time"
           sortable
-          width="200"
+          min-width="15%"
           header-align="center"
         />
         <el-table-column
           label="结束时间"
           prop="end_time"
           sortable
-          width="250"
+          min-width="15%"
           header-align="center"
         />
         <el-table-column
           label="已执行"
           prop="exec_time"
           sortable
-          width="100"
+          min-width="10%"
           header-align="center"
         />
-        <el-table-column label="操作" header-align="center">
+        <el-table-column label="操作" header-align="center" min-width="15%">
           <template slot-scope="scope">
             <el-button
               size="mini"
@@ -133,45 +133,45 @@
           label="项目"
           prop="project"
           sortable
-          width="100"
+          min-width="10%"
           header-align="center"
         />
         <el-table-column
           label="爬虫"
           prop="spider"
           sortable
-          width="100"
+          min-width="10%"
           header-align="center"
         />
         <el-table-column
           label="id"
           prop="id"
           sortable
-          width="300"
+          min-width="25%"
           header-align="center"
         />
         <el-table-column
           label="开始时间"
           prop="start_time"
           sortable
-          width="200"
+          min-width="15%"
           header-align="center"
         />
         <el-table-column
           label="结束时间"
           prop="end_time"
           sortable
-          width="250"
+          min-width="15%"
           header-align="center"
         />
         <el-table-column
           label="执行时间"
           prop="exec_time"
           sortable
-          width="100"
+          min-width="10%"
           header-align="center"
         />
-        <el-table-column label="操作" header-align="center">
+        <el-table-column label="操作" header-align="center" min-width="15%">
           <template slot-scope="scope">
             <el-button
               size="mini"
