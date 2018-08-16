@@ -146,4 +146,6 @@ Pipfile.lock
 
 #migrations
 /manager/migrations/
-/manager/migrations/!__init__.py
+!/manager/migrations/__init__.py
+
+*.json
