@@ -3,7 +3,8 @@ import Router from 'vue-router'
 import Home from '@/view/Home'
 import Main from '@/view/Main'
 import Schedule from '@/view/Schedule'
-import DeployLocalProject from '@/view/DeployLocalProject'
+import Deploy from '@/view/Deploy'
+import Project from '@/view/Project'
 
 Vue.use(Router)
 
@@ -21,9 +22,13 @@ export default new Router({
           path: '/schedule',
           component: Schedule
         },
-       {
-          path: '/deploy_local_project',
-          component: DeployLocalProject
+        {
+          path: '/deploy',
+          component: Deploy
+        },
+        {
+          path: '/project',
+          component: Project
         }]
     }
   ]

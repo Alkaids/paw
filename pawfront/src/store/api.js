@@ -81,14 +81,7 @@ function PostFetch(url, params, contentType) {
           }
         })
         .catch((error) => {
-          if (error.response) {
-            console.log(error.response.data)
-          } else if (error.request) {
-            console.log(error.request)
-          } else {
-            console.log('Error', error.message)
-          }
-          console.log(error.config)
+          console.log(error)
           reject(error)
         })
     })
@@ -111,14 +104,7 @@ function PostFetch(url, params, contentType) {
           }
         })
         .catch((error) => {
-          if (error.response) {
-            console.log(error.response.data)
-          } else if (error.request) {
-            console.log(error.request)
-          } else {
-            console.log('Error', error.message)
-          }
-          console.log(error.config)
+          console.log(error)
           reject(error)
         })
     })
@@ -145,14 +131,7 @@ function GetFetch(url, params, contentType) {
           }
         })
         .catch((error) => {
-          if (error.response) {
-            console.log(error.response.data)
-          } else if (error.request) {
-            console.log(error.request)
-          } else {
-            console.log('Error', error.message)
-          }
-          console.log(error.config)
+          console.log(error)
           reject(error)
         })
     })
@@ -175,14 +154,7 @@ function GetFetch(url, params, contentType) {
           }
         })
         .catch((error) => {
-          if (error.response) {
-            console.log(error.response.data)
-          } else if (error.request) {
-            console.log(error.request)
-          } else {
-            console.log('Error', error.message)
-          }
-          console.log(error.config)
+          console.log(error)
           reject(error)
         })
     })
@@ -209,14 +181,7 @@ function PutFetch(url, params, contentType) {
           }
         })
         .catch((error) => {
-          if (error.response) {
-            console.log(error.response.data)
-          } else if (error.request) {
-            console.log(error.request)
-          } else {
-            console.log('Error', error.message)
-          }
-          console.log(error.config)
+          console.log(error)
           reject(error)
         })
     })
@@ -239,14 +204,56 @@ function PutFetch(url, params, contentType) {
           }
         })
         .catch((error) => {
-          if (error.response) {
-            console.log(error.response.data)
-          } else if (error.request) {
-            console.log(error.request)
+          console.log(error)
+          reject(error)
+        })
+    })
+  }
+}
+function DelFetch(url, params, contentType) {
+  if (params !== null && params.ispaw === true) {
+    return new Promise((resolve, reject) => {
+      pawclient.delete(url, params, {
+        headers: {
+          'Content-Type': contentType
+        }
+      }, {
+        validateStatus: status => {
+          return status !== 200
+        }
+      })
+        .then(response => {
+          if (response.data) {
+            resolve(response.data)
           } else {
-            console.log('Error', error.message)
+            resolve(response.data)
           }
-          console.log(error.config)
+        })
+        .catch((error) => {
+          console.log(error)
+          reject(error)
+        })
+    })
+  } else {
+    return new Promise((resolve, reject) => {
+      axios.delete(url, params, {
+        headers: {
+          'Content-Type': contentType
+        }
+      }, {
+        validateStatus: status => {
+          return status !== 200
+        }
+      })
+        .then(response => {
+          if (response.data) {
+            resolve(response.data)
+          } else {
+            resolve(response.data)
+          }
+        })
+        .catch((error) => {
+          console.log(error)
           reject(error)
         })
     })
@@ -286,4 +293,25 @@ export function listdefinedprojects(param) {
  */
 export function saveproject(param) {
   return PostFetch('/manager/project/', param, 'application/json')
+}
+
+/**
+ * 更新项目
+ */
+export function updateproject(param) {
+  return PutFetch('/manager/project/' + param.id + '/', param, 'application/json')
+}
+
+/**
+ * 获得项目
+ */
+export function getproject(param) {
+  return GetFetch('/manager/project/' + param.id + '/', param, 'application/json')
+}
+
+/**
+ * 删除项目
+ */
+export function delproject(param) {
+  return DelFetch('/manager/project/' + param.id + '/', param, 'application/json')
 }

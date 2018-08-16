@@ -10,27 +10,21 @@
             <span slot="title">主菜单</span>
           </template>
           <el-menu-item-group>
-            <el-menu-item index="/main">总览</el-menu-item>
-            <el-menu-item index="/schedule">爬虫调度</el-menu-item>
-            <el-menu-item index="1-3">爬取日志</el-menu-item>
+            <el-menu-item index="/main" class="menu-item">总览</el-menu-item>
+            <el-menu-item index="/project" class="menu-item">爬虫项目</el-menu-item>
+            <el-menu-item index="/deploy" class="menu-item">爬虫部署</el-menu-item>
+            <el-menu-item index="/schedule" class="menu-item">爬虫调度</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
-        <el-submenu index="2">
-          <template slot="title">
-            <i class="el-icon-upload"></i>
-            <span slot="title">部署</span>
-          </template>
-          <el-menu-item-group>
-            <el-menu-item index="/setting">设置</el-menu-item>
-            <el-menu-item index="/upload_project">上传项目</el-menu-item>
-            <el-menu-item index="/deploy_local_project">部署本地项目</el-menu-item>
-          </el-menu-item-group>
-        </el-submenu>
-        <el-menu-item index="3">
+        <el-menu-item index="/setting" class="menu-item">
+          <i class="el-icon-upload"></i>
+          <span slot="title">设置</span>
+        </el-menu-item>
+        <el-menu-item index="3" class="menu-item">
           <i class="el-icon-edit"></i>
           <span slot="title">开发者</span>
         </el-menu-item>
-        <el-menu-item index="4">
+        <el-menu-item index="4" class="menu-item">
           <i class="el-icon-question"></i>
           <span slot="title">帮助</span>
         </el-menu-item>
@@ -64,9 +58,7 @@
       </el-menu>
     </div>
     <div class="content-container">
-      <!--<transition name="el-fade-in-linear">-->
-        <router-view></router-view>
-      <!--</transition>-->
+      <router-view></router-view>
     </div>
   </div>
 </template>
@@ -99,7 +91,7 @@
   }
 
   .left-sidebar {
-    max-width: 20%;
+    max-width: 13.5%;
   }
 
   .nav-bar {
@@ -107,7 +99,7 @@
   }
 
   .content-container {
-    margin-left: 210px;
+    margin-left: 13.5%;
   }
 
   .right-menu {
@@ -116,5 +108,9 @@
 
   .right-menu-item {
     display: inline-block;
+  }
+
+  .menu-item {
+    min-width: 0 !important;
   }
 </style>

@@ -1,55 +1,29 @@
 <template>
   <div class="main-content">
     <div class="button-tool">
-      <el-button type="primary" size="mini"
-                 @click="dialogFormVisible = true" class="left-text">新增项目
+      <el-popover
+        placement="right"
+        width="450"
+        trigger="click">
+        <el-form :inline="true">
+          <el-form-item style="margin-bottom: 0!important;">
+            <el-input v-model="interval" auto-complete="off" >
+              <template slot="append">秒刷新一次</template>
+            </el-input>
+          </el-form-item>
+          <el-form-item style="margin-bottom: 0!important;">
+            <el-button type="primary" size="mini"
+                       @click="intervalLoadStartOrStop()">开始自动刷新
+            </el-button>
+          </el-form-item>
+        </el-form>
+        <el-button slot="reference" size="mini" type="primary" style="margin-left: 10px">{{intervaltext}}</el-button>
+      </el-popover>
+      <el-button type="primary" size="mini" v-show="this.intervalid!==0"
+                 @click="intervalLoadStartOrStop()">停止自动刷新
       </el-button>
     </div>
     <el-collapse>
-      <el-collapse-item>
-        <template slot="title">
-          <h4 class="left-title"> 项目列表
-          </h4>
-        </template>
-        <div class="pending-table">
-          <el-table
-            :data="projects"
-            style="width: 100%">
-            <el-table-column
-              label="名称"
-              sortable
-              prop="name"
-              min-width="25%"
-              header-align="center"
-            />
-            <el-table-column
-              label="备注"
-              prop="memo"
-              min-width="25%"
-              header-align="center"
-            />
-            <el-table-column
-              label="路径"
-              prop="path"
-              min-width="25%"
-              header-align="center"
-            />
-            <el-table-column label="操作" header-align="center" min-width="15%">
-              <template slot-scope="scope">
-                <el-button
-                  size="mini"
-                  @click="handleEdit(scope.$index, scope.row)">编辑
-                </el-button>
-                <el-button
-                  size="mini"
-                  type="danger"
-                  @click="handleDelete(scope.$index, scope.row)">删除
-                </el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-        </div>
-      </el-collapse-item>
       <el-collapse-item>
         <template slot="title">
           <h4 class="left-title"> 部署中任务
@@ -245,7 +219,7 @@
         </div>
       </el-collapse-item>
     </el-collapse>
-    <el-dialog title="日志" :visible.sync="dialogTableVisible">
+    <el-dialog title="日志" :visible.sync="dialogTableVisible" width="80%" top="5vh">
       <div class="log-content">
          <pre v-highlight>
          <code class="left-text accesslog" v-html="logtext">
@@ -253,28 +227,15 @@
     </pre>
       </div>
     </el-dialog>
-    <el-dialog title="新建项目" :visible.sync="dialogFormVisible">
-      <el-form :model="project">
-        <el-form-item label="项目名称" :label-width="formLabelWidth">
-          <el-input v-model="project.name" auto-complete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="项目备注" :label-width="formLabelWidth">
-          <el-input v-model="project.memo" auto-complete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="项目路径" :label-width="formLabelWidth">
-          <el-input v-model="project.path" auto-complete="off"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="saveProject">确 定</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
 <script>
-  import {listprojects, listjobs, listlog, listdefinedprojects, saveproject} from '../store/api'
+  import {
+    listprojects,
+    listjobs,
+    listlog
+  } from '../store/api'
   import {timeFormat, timeReduce} from '../utils/timeUtils'
 
   export default {
@@ -286,25 +247,21 @@
         finished: [],
         dialogTableVisible: false,
         logtext: '',
-        projects: [],
-        dialogFormVisible: false,
-        project: {},
-        formLabelWidth: '120px'
+        interval: 0,
+        intervalid: 0,
+        intervalid2: 0,
+        intervaltext: '定时刷新'
       }
     },
     mounted() {
       this.loadTask()
-      this.listDefinedProjects()
     },
     methods: {
-      listDefinedProjects() {
-        let param = {}
-        param.ispaw = true
-        listdefinedprojects(param).then(res => {
-          this.projects = res.data
-        })
-      },
+      // 加载所有任务
       loadTask() {
+        this.pending = []
+        this.running = []
+        this.finished = []
         let param = {}
         param.ispaw = true
         listprojects(param).then(res => {
@@ -338,10 +295,10 @@
           console.log(err)
         })
       },
+      // 显示日志
       logShow(job) {
         let param = {}
         param.ispaw = true
-        param.path = 'e:/code/paw/logs'
         param.project = job.project
         param.spider = job.spider
         param.id = job.id
@@ -350,23 +307,33 @@
           this.dialogTableVisible = true
         })
       },
-      saveProject() {
-        let param = {}
-        param.ispaw = true
-        param.path = this.project.path
-        param.name = this.project.name
-        param.memo = this.project.memo
-        saveproject(param).then(res => {
-          this.dialogFormVisible = false
-          this.listDefinedProjects()
-          this.$notify({
-            title: '标题名称',
-            message: res.msg
-          })
-        }).catch(err => {
-          console.log(err)
-        })
+      // 开始或停止自动刷新
+      intervalLoadStartOrStop() {
+        if (this.intervaltext === '定时刷新' && this.interval > 0) {
+          this.intervalid = setInterval(() => {
+            this.loadTask()
+          }, this.interval * 1000)
+          let timelimit = this.interval
+          this.intervalid2 = setInterval(() => {
+            timelimit = timelimit - 1
+            if (timelimit === -1) {
+              timelimit = this.interval
+            }
+            this.intervaltext = timelimit + '秒后刷新'
+          }, 1000)
+        } else {
+          this.intervaltext = '定时刷新'
+          this.interval = 0
+          clearInterval(this.intervalid)
+          clearInterval(this.intervalid2)
+          this.intervalid = 0
+          this.intervalid2 = 0
+        }
       }
+    },
+    beforeDestroy() {
+      clearInterval(this.intervalid)
+      clearInterval(this.intervalid2)
     }
   }
 </script>

@@ -1,13 +1,12 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets, status
 from django.http import JsonResponse
-from manager.models import Project
+from manager.models import Project, Setting
 from manager.serializers import UserSerializer, GroupSerializer, ProjectSerializer
 from rest_framework.views import APIView
 import sys
 import subprocess
 import logging
-import json
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -57,7 +56,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
     def destroy(self, request, *args, **kwargs):
         js = {}
         js['code'] = status.HTTP_200_OK
-        js['msg'] = '更新项目成功'
+        js['msg'] = '删除项目成功'
         js['data'] = super().destroy(request, *args, **kwargs).data
         return JsonResponse(data=js, safe=False)
 
@@ -103,12 +102,11 @@ class Deploy(APIView):
 class LogShow(APIView):
     def post(self, request, *args, **kwargs):
         jobid = request.data['id']
-        log_path = request.data['path']
+        log_path = Setting.objects.get(name='log_path').value
         project = request.data['project']
         spider = request.data['spider']
         logging.info('查询 ' + log_path + '路径下项目为' + project + '爬虫为' + spider + ' jobid为' + jobid + '的任务日志')
         file_path = log_path + '/' + project + '/' + spider + '/' + jobid + '.log'
-        log_text = ''
         with open(file_path, 'r+', encoding='UTF-8') as f:
             lines = f.readlines()
             log_text = lines

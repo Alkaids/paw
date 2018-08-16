@@ -1,17 +1,23 @@
 from django.db import models
 
 
-# Create your models here.
 class Project(models.Model):
-    # 爬虫名字
+    # spider name
     name = models.CharField(max_length=200)
-    # 爬虫备注
+    # spider memo
     memo = models.CharField(max_length=200)
-    # 爬虫所在路径
+    # spider path
     path = models.CharField(max_length=400)
-    # 爬虫类型：0.普通爬虫 1.Scarpy
+    # spider type
     type = models.IntegerField(default=0)
-    # 创建时间
+    # createTime
     createTime = models.DateTimeField(auto_now_add=True)
-    # 最后修改时间
+    # lastModifyTime
     lastModifyTime = models.DateTimeField(auto_now=True)
+
+
+class Setting(models.Model):
+    # setting name
+    name = models.CharField(max_length=200)
+    # setting value
+    value = models.CharField(max_length=200)
