@@ -214,4 +214,8 @@
     border-radius: 3px;
     margin-top: 5px;
   }
+  .left-title {
+    text-align: left !important;
+    margin-left: 2%;
+  }
 </style>

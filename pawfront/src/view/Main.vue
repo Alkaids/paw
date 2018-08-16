@@ -262,9 +262,7 @@
         this.pending = []
         this.running = []
         this.finished = []
-        let param = {}
-        param.ispaw = true
-        listprojects(param).then(res => {
+        listprojects().then(res => {
           let projectList = res.projects
           for (let project of projectList) {
             listjobs(project).then(res => {

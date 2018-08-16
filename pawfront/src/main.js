@@ -8,6 +8,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import 'font-awesome/css/font-awesome.css'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/googlecode.css'
+import vueTopprogress from 'vue-top-progress'
 
 Vue.directive('highlight', function (el) {
   let blocks = el.querySelectorAll('pre code')
@@ -18,6 +19,7 @@ Vue.directive('highlight', function (el) {
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
+Vue.use(vueTopprogress)
 
 /* eslint-disable no-new */
 new Vue({

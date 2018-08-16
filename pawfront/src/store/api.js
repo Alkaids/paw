@@ -210,6 +210,7 @@ function PutFetch(url, params, contentType) {
     })
   }
 }
+
 function DelFetch(url, params, contentType) {
   if (params !== null && params.ispaw === true) {
     return new Promise((resolve, reject) => {
@@ -314,4 +315,23 @@ export function getproject(param) {
  */
 export function delproject(param) {
   return DelFetch('/manager/project/' + param.id + '/', param, 'application/json')
+}
+
+/**
+ * 部署项目
+ */
+export function deployproject(param) {
+  return PostFetch('/manager/deploy/', param, 'application/json')
+}
+/**
+ * 取消部署项目
+ */
+export function canceldployproject(param) {
+  return PostFetch('/delproject.json', param, 'application/json')
+}
+/**
+ * 通过project名字查找所有版本信息
+ */
+export function listversionsbyprojectname(param) {
+  return GetFetch('/listversions.json?project=' + param.name, param, 'application/json')
 }

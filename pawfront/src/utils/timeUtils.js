@@ -12,3 +12,7 @@ export function timeReduce(start, end) {
   }
   return moment(end).diff(moment(start)) / 1000
 }
+
+export function timeStampFormat(time) {
+  return moment.unix(time).format('YYYY-MM-DD HH:mm:ss')
+}

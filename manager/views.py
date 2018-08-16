@@ -93,7 +93,7 @@ class Deploy(APIView):
         x = subprocess.run(sh, shell=True, stdout=subprocess.PIPE)
         js = {}
         js['code'] = status.HTTP_200_OK
-        js['msg'] = '添加任务成功'
+        js['msg'] = '部署任务成功'
         js['data'] = {'deploy_result': bytes.decode(x.stdout).replace('\r', '').replace('\n', '')}
         logging.info(js)
         return JsonResponse(js, safe=False)
