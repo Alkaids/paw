@@ -22,18 +22,18 @@
         <el-table-column
           label="备注"
           prop="memo"
-          min-width="25%"
+          min-width="23%"
           header-align="center"
         />
         <el-table-column
           label="路径"
           prop="path"
-          min-width="45"
+          min-width="40%"
           header-align="center"
         />
         <el-table-column
           label="最新部署时间"
-          min-width="15%"
+          min-width="20%"
           header-align="center">
           <template slot-scope="scope">
             <el-popover trigger="hover" placement="top">
@@ -57,7 +57,7 @@
             </el-popover>
           </template>
         </el-table-column>
-        <el-table-column label="部署" header-align="center" min-width="15%">
+        <el-table-column label="部署" header-align="center" min-width="20%">
           <template slot-scope="scope">
             <el-button
               type="primary"
@@ -132,25 +132,37 @@
         param.project = project.name
         canceldployproject(param).then(res => {
           this.listDefinedProjects()
-          this.$notify({
-            title: '成功',
-            message: res.msg
-          })
+          if (res.status === 'ok') {
+            this.$notify({
+              title: '成功',
+              message: '取消部署成功'
+            })
+          } else {
+            this.$notify({
+              type: 'error',
+              title: '失败',
+              message: '取消部署失败'
+            })
+          }
         })
       },
       listVersionsByProjectname() {
         listprojects().then(res => {
-          for (let project of res.projects) {
-            let param = {}
-            param.name = project
-            this.versionList[project] = []
-            listversionsbyprojectname(param).then(res => {
-              for (let ver of res.versions) {
-                this.versionList[project].push(ver)
-              }
-              this.addVersionsToProject(project)
-              this.$refs.topProgress.done()
-            })
+          if (res.projects.length === 0) {
+            this.$refs.topProgress.done()
+          } else {
+            for (let project of res.projects) {
+              let param = {}
+              param.name = project
+              this.versionList[project] = []
+              listversionsbyprojectname(param).then(res => {
+                for (let ver of res.versions) {
+                  this.versionList[project].push(ver)
+                }
+                this.addVersionsToProject(project)
+                this.$refs.topProgress.done()
+              })
+            }
           }
         }).catch(err => {
           console.log(err)

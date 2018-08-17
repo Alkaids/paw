@@ -1,5 +1,6 @@
 <template>
   <div class="main-content">
+    <vue-topprogress ref="topProgress"></vue-topprogress>
     <div class="button-tool">
       <el-button type="primary" size="mini"
                  @click="dialogAddFormVisible = true" style="margin-left: 10px">新增项目
@@ -113,6 +114,7 @@
       }
     },
     mounted() {
+      this.$refs.topProgress.start()
       this.listDefinedProjects()
     },
     methods: {
@@ -122,6 +124,7 @@
         param.ispaw = true
         listdefinedprojects(param).then(res => {
           this.projects = res.data
+          this.$refs.topProgress.done()
         })
       },
       // 保存项目
@@ -214,6 +217,7 @@
     border-radius: 3px;
     margin-top: 5px;
   }
+
   .left-title {
     text-align: left !important;
     margin-left: 2%;

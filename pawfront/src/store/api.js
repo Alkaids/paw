@@ -1,4 +1,5 @@
 import axios from 'axios'
+import qs from 'qs'
 
 // axios 配置
 // axios.defaults.timeout = 5000
@@ -64,7 +65,7 @@ axios.interceptors.response.use((res) => {
 function PostFetch(url, params, contentType) {
   if (params !== null && params.ispaw === true) {
     return new Promise((resolve, reject) => {
-      pawclient.post(url, params, {
+      pawclient.post(url, contentType === 'application/x-www-form-urlencoded' ? qs.stringify(params) : params, {
         headers: {
           'Content-Type': contentType
         }
@@ -87,7 +88,7 @@ function PostFetch(url, params, contentType) {
     })
   } else {
     return new Promise((resolve, reject) => {
-      axios.post(url, params, {
+      axios.post(url, contentType === 'application/x-www-form-urlencoded' ? qs.stringify(params) : params, {
         headers: {
           'Content-Type': contentType
         }
@@ -323,12 +324,14 @@ export function delproject(param) {
 export function deployproject(param) {
   return PostFetch('/manager/deploy/', param, 'application/json')
 }
+
 /**
  * 取消部署项目
  */
 export function canceldployproject(param) {
-  return PostFetch('/delproject.json', param, 'application/json')
+  return PostFetch('/delproject.json', param, 'application/x-www-form-urlencoded')
 }
+
 /**
  * 通过project名字查找所有版本信息
  */

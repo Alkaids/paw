@@ -1,5 +1,6 @@
 <template>
   <div class="main-content">
+    <vue-topprogress ref="topProgress"></vue-topprogress>
     <div class="button-tool">
       <el-popover
         placement="right"
@@ -7,7 +8,7 @@
         trigger="click">
         <el-form :inline="true">
           <el-form-item style="margin-bottom: 0!important;">
-            <el-input v-model="interval" auto-complete="off" >
+            <el-input v-model="interval" auto-complete="off">
               <template slot="append">秒刷新一次</template>
             </el-input>
           </el-form-item>
@@ -259,6 +260,7 @@
     methods: {
       // 加载所有任务
       loadTask() {
+        this.$refs.topProgress.start()
         this.pending = []
         this.running = []
         this.finished = []
@@ -287,6 +289,7 @@
                 finish.exec_time = timeReduce(finish.start_time, finish.end_time) + 's'
                 this.finished.push(finish)
               }
+              this.$refs.topProgress.done()
             })
           }
         }).catch(err => {
