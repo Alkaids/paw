@@ -259,31 +259,35 @@
         this.finished = []
         listprojects().then(res => {
           let projectList = res.projects
-          for (let project of projectList) {
-            listjobs(project).then(res => {
-              for (let pend of res.pending) {
-                pend.project = project
-                pend.start_time = timeFormat(pend.start_time)
-                pend.end_time = timeFormat(pend.end_time)
-                pend.exec_time = timeReduce(pend.start_time, null) + 's'
-                this.pending.push(pend)
-              }
-              for (let run of res.running) {
-                run.project = project
-                run.start_time = timeFormat(run.start_time)
-                run.end_time = timeFormat(run.end_time)
-                run.exec_time = timeReduce(run.start_time, null) + 's'
-                this.running.push(run)
-              }
-              for (let finish of res.finished) {
-                finish.project = project
-                finish.start_time = timeFormat(finish.start_time)
-                finish.end_time = timeFormat(finish.end_time)
-                finish.exec_time = timeReduce(finish.start_time, finish.end_time) + 's'
-                this.finished.push(finish)
-              }
-              this.$refs.topProgress.done()
-            })
+          if (projectList.length === 0) {
+            this.$refs.topProgress.done()
+          } else {
+            for (let project of projectList) {
+              listjobs(project).then(res => {
+                for (let pend of res.pending) {
+                  pend.project = project
+                  pend.start_time = timeFormat(pend.start_time)
+                  pend.end_time = timeFormat(pend.end_time)
+                  pend.exec_time = timeReduce(pend.start_time, null) + 's'
+                  this.pending.push(pend)
+                }
+                for (let run of res.running) {
+                  run.project = project
+                  run.start_time = timeFormat(run.start_time)
+                  run.end_time = timeFormat(run.end_time)
+                  run.exec_time = timeReduce(run.start_time, null) + 's'
+                  this.running.push(run)
+                }
+                for (let finish of res.finished) {
+                  finish.project = project
+                  finish.start_time = timeFormat(finish.start_time)
+                  finish.end_time = timeFormat(finish.end_time)
+                  finish.exec_time = timeReduce(finish.start_time, finish.end_time) + 's'
+                  this.finished.push(finish)
+                }
+                this.$refs.topProgress.done()
+              })
+            }
           }
         }).catch(err => {
           console.log(err)

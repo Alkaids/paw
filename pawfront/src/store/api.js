@@ -3,10 +3,13 @@ import qs from 'qs'
 
 // axios 配置
 // axios.defaults.timeout = 5000
-axios.defaults.baseURL = 'http://localhost:6800/'
+// axios.defaults.baseURL = 'http://118.24.42.37:6800/'
+axios.defaults.baseURL = 'http://127.0.0.1:6800/'
+
 // pawclient实例
 let pawclient = axios.create({
   baseURL: 'http://127.0.0.1:8000'
+  //   baseURL: 'http://118.24.42.37:8000'
 })
 
 // 默认响应拦截器，拦截异常
@@ -107,67 +110,16 @@ pawclient.interceptors.response.use((res) => {
   }
   return Promise.reject(err)
 })
-function PostFetch(url, params, contentType) {
-  if (params !== null && params.ispaw === true) {
-    return new Promise((resolve, reject) => {
-      pawclient.post(url, contentType === 'application/x-www-form-urlencoded' ? qs.stringify(params) : params, {
-        headers: {
-          'Content-Type': contentType
-        }
-      }, {
-        validateStatus: status => {
-          return status !== 200
-        }
-      })
-        .then(response => {
-          if (response.data) {
-            resolve(response.data)
-          } else {
-            resolve(response.data)
-          }
-        })
-        .catch((error) => {
-          console.log(error)
-          reject(error)
-        })
-    })
-  } else {
-    return new Promise((resolve, reject) => {
-      axios.post(url, contentType === 'application/x-www-form-urlencoded' ? qs.stringify(params) : params, {
-        headers: {
-          'Content-Type': contentType
-        }
-      }, {
-        validateStatus: status => {
-          return status !== 200
-        }
-      })
-        .then(response => {
-          if (response.data) {
-            resolve(response.data)
-          } else {
-            resolve(response.data)
-          }
-        })
-        .catch((error) => {
-          console.log(error)
-          reject(error)
-        })
-    })
-  }
-}
 
-function GetFetch(url, params, contentType) {
+function apiAxios(method, url, params, contentType) {
   if (params !== null && params.ispaw === true) {
     return new Promise((resolve, reject) => {
-      pawclient.get(url, {
-        headers: {
-          'Content-Type': contentType
-        }
-      }, {
-        validateStatus: status => {
-          return status !== 200
-        }
+      pawclient({
+        method: method,
+        url: url,
+        data: method !== 'GET' || method === 'PUT' ? (contentType === 'application/x-www-form-urlencoded' ? qs.stringify(params) : params) : null,
+        params: method === 'GET' || method === 'DELETE' ? params : null,
+        headers: {'Content-Type': contentType}
       })
         .then(response => {
           if (response.data) {
@@ -176,121 +128,16 @@ function GetFetch(url, params, contentType) {
             resolve(response.data)
           }
         })
-        .catch((error) => {
-          console.log(error)
-          reject(error)
-        })
+        .catch()
     })
   } else {
     return new Promise((resolve, reject) => {
-      axios.get(url, {
-        headers: {
-          'Content-Type': contentType
-        }
-      }, {
-        validateStatus: status => {
-          return status !== 200
-        }
-      })
-        .then(response => {
-          if (response.data) {
-            resolve(response.data)
-          } else {
-            resolve(response.data)
-          }
-        })
-        .catch((error) => {
-          console.log(error)
-          reject(error)
-        })
-    })
-  }
-}
-
-function PutFetch(url, params, contentType) {
-  if (params !== null && params.ispaw === true) {
-    return new Promise((resolve, reject) => {
-      pawclient.put(url, params, {
-        headers: {
-          'Content-Type': contentType
-        }
-      }, {
-        validateStatus: status => {
-          return status !== 200
-        }
-      })
-        .then(response => {
-          if (response.data) {
-            resolve(response.data)
-          } else {
-            resolve(response.data)
-          }
-        })
-        .catch((error) => {
-          console.log(error)
-          reject(error)
-        })
-    })
-  } else {
-    return new Promise((resolve, reject) => {
-      axios.put(url, params, {
-        headers: {
-          'Content-Type': contentType
-        }
-      }, {
-        validateStatus: status => {
-          return status !== 200
-        }
-      })
-        .then(response => {
-          if (response.data) {
-            resolve(response.data)
-          } else {
-            resolve(response.data)
-          }
-        })
-        .catch((error) => {
-          console.log(error)
-          reject(error)
-        })
-    })
-  }
-}
-
-function DelFetch(url, params, contentType) {
-  if (params !== null && params.ispaw === true) {
-    return new Promise((resolve, reject) => {
-      pawclient.delete(url, params, {
-        headers: {
-          'Content-Type': contentType
-        }
-      }, {
-        validateStatus: status => {
-          return status !== 200
-        }
-      })
-        .then(response => {
-          if (response.data) {
-            resolve(response.data)
-          } else {
-            resolve(response.data)
-          }
-        })
-        .catch((error) => {
-          console.log(error)
-          reject(error)
-        })
-    })
-  } else {
-    return new Promise((resolve, reject) => {
-      axios.delete(url, params, {
-        headers: {
-          'Content-Type': contentType
-        }
-      }, {
-        validateStatus: status => {
-          return status !== 200
-        }
+      axios({
+        method: method,
+        url: url,
+        data: method !== 'GET' || method === 'PUT' ? (contentType === 'application/x-www-form-urlencoded' ? qs.stringify(params) : params) : null,
+        params: method === 'GET' || method === 'DELETE' ? params : null,
+        headers: {'Content-Type': contentType}
       })
         .then(response => {
           if (response.data) {
@@ -311,96 +158,96 @@ function DelFetch(url, params, contentType) {
  * 获取所有项目
  */
 export function listprojects() {
-  return GetFetch('/listprojects.json', null, 'application/json')
+  return apiAxios('get', '/listprojects.json', null, 'text/plain')
 }
 
 /**
  * 获取所有项目
  */
 export function listjobs(project) {
-  return GetFetch('/listjobs.json?project=' + project, null, 'application/json')
+  return apiAxios('get', '/listjobs.json?project=' + project, null, 'application/json')
 }
 
 /**
  * 获取日志
  */
 export function listlog(param) {
-  return PostFetch('/manager/log/', param, 'application/json')
+  return apiAxios('post', '/manager/log/', param, 'application/json')
 }
 
 /**
  * 获取定义好的所有项目
  */
 export function listdefinedprojects(param) {
-  return GetFetch('/manager/project/', param, 'application/json')
+  return apiAxios('get', '/manager/project/', param, 'application/json')
 }
 
 /**
  * 保存项目
  */
 export function saveproject(param) {
-  return PostFetch('/manager/project/', param, 'application/json')
+  return apiAxios('post', '/manager/project/', param, 'application/json')
 }
 
 /**
  * 更新项目
  */
 export function updateproject(param) {
-  return PutFetch('/manager/project/' + param.id + '/', param, 'application/json')
+  return apiAxios('put', '/manager/project/' + param.id + '/', param, 'application/json')
 }
 
 /**
  * 获得项目
  */
 export function getproject(param) {
-  return GetFetch('/manager/project/' + param.id + '/', param, 'application/json')
+  return apiAxios('get', '/manager/project/' + param.id + '/', param, 'application/json')
 }
 
 /**
  * 删除项目
  */
 export function delproject(param) {
-  return DelFetch('/manager/project/' + param.id + '/', param, 'application/json')
+  return apiAxios('delete', '/manager/project/' + param.id + '/', param, 'application/json')
 }
 
 /**
  * 部署项目
  */
 export function deployproject(param) {
-  return PostFetch('/manager/deploy/', param, 'application/json')
+  return apiAxios('put', '/manager/deploy/', param, 'application/json')
 }
 
 /**
  * 取消部署项目
  */
 export function canceldployproject(param) {
-  return PostFetch('/delproject.json', param, 'application/x-www-form-urlencoded')
+  return apiAxios('post', '/delproject.json', param, 'application/x-www-form-urlencoded')
 }
 
 /**
  * 通过project名字查找所有版本信息
  */
 export function listversionsbyprojectname(param) {
-  return GetFetch('/listversions.json?project=' + param.name, param, 'application/json')
+  return apiAxios('get', '/listversions.json?project=' + param.name, param, 'application/json')
 }
 
 /**
  * 通过project名字查找所有爬虫信息
  */
 export function listspidersbyprojectname(param) {
-  return GetFetch('/listspiders.json?project=' + param.name, param, 'application/json')
+  return apiAxios('get', '/listspiders.json?project=' + param.name, param, 'application/json')
 }
 
 /**
  * 部署爬虫
  */
 export function schedule(param) {
-  return PostFetch('/schedule.json', param, 'application/x-www-form-urlencoded')
+  return apiAxios('post', '/schedule.json', param, 'application/x-www-form-urlencoded')
 }
 
 /**
  * 删除部署中或者运行中的爬虫
  */
 export function cancel(param) {
-  return PostFetch('/cancel.json', param, 'application/x-www-form-urlencoded')
+  return apiAxios('post', '/cancel.json', param, 'application/x-www-form-urlencoded')
 }
