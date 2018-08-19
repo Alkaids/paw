@@ -54,7 +54,7 @@
             </el-popover>
           </template>
         </el-table-column>
-        <el-table-column label="部署" header-align="center" min-width="20%">
+        <el-table-column label="操作" header-align="center" min-width="20%">
           <template slot-scope="scope">
             <el-button
               type="primary"
@@ -62,17 +62,48 @@
               @click="handleSchedule(scope.row)"
             >调度
             </el-button>
+            <el-button
+              type="primary"
+              size="mini"
+              @click="handleRun(scope.row)"
+            >运行
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
+    <el-dialog title="运行爬虫" :visible.sync="dialogRunFormVisible" width="25%">
+      <el-form :model="runForm" label-position="left">
+        <el-form-item label="项目名称" :label-width="formLabelWidth">
+          <el-input v-model="runForm.project" auto-complete="off" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="爬虫" :label-width="formLabelWidth">
+          <el-select v-model="runForm.spider" placeholder="请选择爬虫">
+            <el-option v-for="spider in spiders" :key="spider" :label="spider" :value="spider"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="版本" :label-width="formLabelWidth">
+          <el-select v-model="runForm._version" placeholder="请选择版本">
+            <el-option v-for="version in versions" :key="version.version" :label="version.versionTime"
+                       :value="version.version"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="addSetting" disabled>增加设置</el-button>
+        <el-button @click="dialogRunFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handSchedule">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
   import {
     listdefinedprojects,
     listversionsbyprojectname,
-    listprojects
+    listprojects,
+    listspidersbyprojectname,
+    schedule
   } from '../store/api'
   import {timeStampFormat} from '../utils/timeUtils'
 
@@ -80,12 +111,24 @@
     name: 'DepoyLocalProject',
     data() {
       return {
-        formLabelWidth: '200px',
+        formLabelWidth: '120px',
         projects: [],
-        versionList: {}
+        versionList: {},
+        dialogRunFormVisible: false,
+        runForm: {
+          project: '',
+          spider: '',
+          settings: [],
+          _version: ''
+        },
+        spiders: [],
+        versions: []
       }
     },
     methods: {
+      addSetting() {
+        this.runForm.settings.push({index: this.runForm.settings.length / 2, name: '', value: ''})
+      },
       // 加载定义好的项目
       listDefinedProjects() {
         let param = {}
@@ -101,7 +144,17 @@
         })
       },
       handleSchedule(project) {
-
+        alert('还没组哦，以后做')
+      },
+      handleRun(project) {
+        let param = {}
+        param.name = project.name
+        listspidersbyprojectname(param).then(res => {
+          this.runForm.project = project.name
+          this.spiders = res.spiders
+          this.versions = project.versions
+          this.dialogRunFormVisible = true
+        })
       },
       listVersionsByProjectname() {
         listprojects().then(res => {
@@ -143,6 +196,23 @@
             }
           }
         }
+      },
+      handSchedule() {
+        schedule(this.runForm).then(res => {
+          if (res.status === 'ok') {
+            this.$notify({
+              title: '成功',
+              message: 'jobid为' + res.jobid
+            })
+            this.dialogRunFormVisible = false
+          } else {
+            this.$notify({
+              title: '失败',
+              message: '启动任务失败'
+            })
+            this.dialogRunFormVisible = false
+          }
+        })
       }
     },
     mounted() {

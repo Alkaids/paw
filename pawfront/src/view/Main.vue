@@ -79,12 +79,8 @@
               <template slot-scope="scope">
                 <el-button
                   size="mini"
-                  @click="handleEdit(scope.$index, scope.row)">编辑
-                </el-button>
-                <el-button
-                  size="mini"
                   type="danger"
-                  @click="handleDelete(scope.$index, scope.row)">删除
+                  @click="handleCancel( scope.row)">删除
                 </el-button>
               </template>
             </el-table-column>
@@ -145,12 +141,8 @@
               <template slot-scope="scope">
                 <el-button
                   size="mini"
-                  @click="handleEdit(scope.$index, scope.row)">编辑
-                </el-button>
-                <el-button
-                  size="mini"
                   type="danger"
-                  @click="handleDelete(scope.$index, scope.row)">删除
+                  @click="handleCancel(scope.row)">删除
                 </el-button>
               </template>
             </el-table-column>
@@ -235,7 +227,8 @@
   import {
     listprojects,
     listjobs,
-    listlog
+    listlog,
+    cancel
   } from '../store/api'
   import {timeFormat, timeReduce} from '../utils/timeUtils'
 
@@ -330,6 +323,26 @@
           this.intervalid = 0
           this.intervalid2 = 0
         }
+      },
+      handleCancel(project) {
+        let prarm = {}
+        prarm.project = project.project
+        prarm.job = project.id
+        cancel(prarm).then(res => {
+            if (res.status === 'ok') {
+              this.$notify({
+                title: '成功',
+                message: '删除任务成功'
+              })
+            } else {
+              this.$notify({
+                title: '失败',
+                message: '删除任务失败'
+              })
+            }
+            this.loadTask()
+          }
+        )
       }
     },
     beforeDestroy() {
