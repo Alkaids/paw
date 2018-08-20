@@ -165,7 +165,7 @@ export function listprojects() {
  * 获取所有项目
  */
 export function listjobs(project) {
-  return apiAxios('get', '/listjobs.json?project=' + project, null, 'application/json')
+  return apiAxios('get', '/listjobs.json?project=' + project, null, 'text/plain')
 }
 
 /**
@@ -179,7 +179,7 @@ export function listlog(param) {
  * 获取定义好的所有项目
  */
 export function listdefinedprojects(param) {
-  return apiAxios('get', '/manager/project/', param, 'application/json')
+  return apiAxios('get', '/manager/project/', param, 'text/plain')
 }
 
 /**
@@ -200,7 +200,7 @@ export function updateproject(param) {
  * 获得项目
  */
 export function getproject(param) {
-  return apiAxios('get', '/manager/project/' + param.id + '/', param, 'application/json')
+  return apiAxios('get', '/manager/project/' + param.id + '/', param, 'text/plain')
 }
 
 /**
@@ -228,14 +228,14 @@ export function canceldployproject(param) {
  * 通过project名字查找所有版本信息
  */
 export function listversionsbyprojectname(param) {
-  return apiAxios('get', '/listversions.json?project=' + param.name, param, 'application/json')
+  return apiAxios('get', '/listversions.json?project=' + param.name, param, 'text/plain')
 }
 
 /**
  * 通过project名字查找所有爬虫信息
  */
 export function listspidersbyprojectname(param) {
-  return apiAxios('get', '/listspiders.json?project=' + param.name, param, 'application/json')
+  return apiAxios('get', '/listspiders.json?project=' + param.name, param, 'text/plain')
 }
 
 /**
